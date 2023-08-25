@@ -3,6 +3,6 @@
 ## Dowload [ALL_IN_ONE.html] to run in local system, system must be conneted with interet.
 
 ##Social Media -
-##Instagram - https://www.instagram.com/greatnerve/?hl=en
-##linkedin - https://in.linkedin.com/in/greatnerve
-##Sololearn - https://www.sololearn.com/profile/8384697
+Instagram - https://www.instagram.com/greatnerve/?hl=en
+linkedin - https://in.linkedin.com/in/greatnerve
+Sololearn - https://www.sololearn.com/profile/8384697
