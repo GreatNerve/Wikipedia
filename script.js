@@ -1,7 +1,12 @@
 var article;
 const loader = `<div class="card mx-5 my-2  rounded d-flex justify-content-center align-items-center bg-light loader gradient"><div class="m-3 spinner-border text-success" role="status"><span class="sr-only">Loading...</span></div>Loading...</div>`;
 $(document).ready(function () {
-
+    Swal.fire({
+        icon: 'success',
+        title: "Wikipedia",
+        text: `Search and read Wikipedia article on this application.`,
+        footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
+    });
     $('.navbar-toggler').click(function (e) {
         $('.nav-mob-overly').fadeToggle(400);
         $('#navbararea').toggleClass('show');
@@ -20,7 +25,7 @@ $(document).ready(function () {
         }
     });
     window.addEventListener('online', function () {
-        if ($('#article-area').children('article').size() == 0) {
+        if ($('#article-area').children('article').length == 0) {
             startup();
         }
         return false;
@@ -29,7 +34,7 @@ $(document).ready(function () {
     return false;
 });
 function startup() {
-    article = new wikipedia();
+    article = new Wikipedia();
     article.GetArticle('14533', 'pageids');
     $(".navbar-brand").click(function (event) {
         event.preventDefault();
@@ -43,24 +48,24 @@ function startup() {
     $('.nav-link-direct').click(function (e) {
         let elem;
         e.preventDefault();
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1000, 'swing');
         $('.nav-item.active').removeClass('active');
         $(this).closest('.nav-item').addClass('active');
         switch (this.innerText.toLowerCase()) {
-            case 'about':
-            case 'about':
-                if (!$('#about').hasClass('active')) {
-                    $('section.active').removeClass('active');
-                    $('#about').addClass('active');
-                }
-                break;
-            default:
+            case 'home':
                 if (!$('#article').hasClass('active')) {
                     $('section.active').removeClass('active');
                     $('#article').addClass('active');
                 }
+                break;
         }
     });
     $('.back-home').click(function () {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1000, 'swing');
         $('.nav-item.active').removeClass('active');
         $('.nav-link:contains(home)').closest('.nav-item').addClass('active');
         if (!$('#article').hasClass('active')) {
@@ -69,6 +74,9 @@ function startup() {
         }
     });
     $('a.data-link').click(function (e) {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1000, 'swing');
         e.preventDefault();
         let quarry = $(this).attr('href').trim().toLowerCase().replace('https://en.wikipedia.org/wiki?curid=', '');
         if (quarry) {
@@ -95,7 +103,7 @@ function startup() {
         }
         if (article.suggestion.status) {
             article.suggestion.status = false;
-            if (val != null && val.length !== 0) {
+            if (val) {
                 article.getSuggestion(this, val);
             }
         } else if (val.length !== 0) {
@@ -105,6 +113,9 @@ function startup() {
     });
     $("form.form").submit(function (e) {
         e.preventDefault();
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1000, 'swing');
         let elem = '#quarry';
         let val = $(elem).val().toString().toLowerCase();
         if (val) {
@@ -117,9 +128,12 @@ function startup() {
         }
     });
     $(document).on('click', '.me', function (e) {
+        $('html, body').animate({
+            scrollTop: 0
+        }, 1000, 'swing');
         if(!($('#about').find('h3').text()=='Dheeraj Sharma')){
             $('#about').empty();
-            $('#about').append(`<div class=" d-flex flex-column align-items-center p-4"><img src="https://api.sololearn.com/Uploads/Avatars/8384697.jpg" alt="Dheeraj Sharma" class="img-fluid rounded"><div class="text-center px-3 py-2"><h3>Dheeraj Sharma</h3><div class="social-links m-3 text-center"><a href="https://www.sololearn.com/Profile/8384697" target="_blank"><img src="https://www.sololearn.com//Images/favicon-192x192.png" alt="sololearn"></a><a href="https://github.com/GreatNerve" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Font_Awesome_5_brands_github.svg" alt="github"></a><a href="https://stackoverflow.com/users/13444609/dheeraj-sharma" target="_blank"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png" alt="github"></a></div><h6 class="mx-3 text-break">This project is devloped by me for just fun.</h6><button class="btn btn-outline-primary mt-2 back-home">Back to home</button></div></div><hr>`);
+            $('#about').append(`<div class=" d-flex flex-column align-items-center p-4"><div class="avatar"><img src="https://api.sololearn.com/Uploads/Avatars/8384697.jpg" alt="Dheeraj Sharma"></div><div class="text-center px-3 py-2"><h3>Dheeraj Sharma</h3><div class="social-links m-3 text-center"><a href="https://www.sololearn.com/Profile/8384697" target="_blank"><img src="https://www.sololearn.com//Images/favicon-192x192.png" alt="sololearn"></a><a href="https://github.com/GreatNerve" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Font_Awesome_5_brands_github.svg" alt="github"></a><a href="https://stackoverflow.com/users/13444609/dheeraj-sharma" target="_blank"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png" alt="Stack Overflow"></a></div><h6 class="mx-3 text-break">This project is devloped by me for just fun.</h6><button class="btn btn-outline-primary mt-2 back-home" type="button">Back to home</button></div></div><hr>`);
         }
         e.preventDefault();
         Swal.close();
@@ -148,7 +162,7 @@ function startup() {
         return false;
     });
 }
-class wikipedia {
+class Wikipedia {
     constructor(target = '#article-area', apiURL = 'https://en.wikipedia.org/w/api.php') {
         this.apiURL = apiURL;
         this.target = target;
@@ -270,7 +284,7 @@ class wikipedia {
                             });
                         } else {
                             $(cls.target).children().show();
-                            if ($(cls.target).children('article').size()) {
+                            if ($(cls.target).children('article').length>0) {
                                 $(cls.target).children('.loader').remove();
                             }
                             Swal.fire({
@@ -294,7 +308,7 @@ class wikipedia {
                 return false;
             }, error: function (xhr, status, error) {
                 $(cls.target).children().show();
-                if ($(cls.target).children('article').size() > 0) {
+                if ($(cls.target).children('article').length > 0) {
                     $(cls.target).children('.loader').remove();
                 }
                 if (error == "") {
@@ -344,8 +358,7 @@ class wikipedia {
             div.append($('<p></p>').text(this.article.query.pages[pg].extract));
             footer.append($('<a></a>').attr({
                 class: 'btn btn-outline-info w-auto',
-                href: `https://en.wikipedia.org/wiki?curid=${pg}`,
-                target: '_blank'
+                href: `https://en.wikipedia.org/wiki?curid=${pg}`
             }).text('Full article'));
             footer.append($('<hr>'));
 
