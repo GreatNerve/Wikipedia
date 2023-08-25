@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<!--     
+    Disinged by : Dheeraj Sharma
+    Publication date : 18 August 2020,
+    Don't copy without permission  from Me or Wikipedia Developer's or UG,
+    Some Data is Hard-code and Not slim code, Not Good practice in Real World Application.
+    API : Wikipedia API,
+    Original Application : Wikipedia
+    Not for Commercial use.
+ -->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Search and read Wikipedia article on this application.">
+    <meta name="keywords" content="Wikipedia">
+    <meta name="author" content="Dheeraj Sharma">
+    <title>Dheeraj Sharma</title>
+
+    <link rel="icon" href="https://api.sololearn.com/Uploads/Avatars/8384697.jpg" type="image/icon type"
+        crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css"
+        integrity="sha384-VCmXjywReHh4PwowAiWNagnWcLhlEJLA5buUprzK8rxFgeH0kww/aWY76TfkUoSX" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/venobox/1.9.0/venobox.min.css"
+        integrity="sha512-e+0yqAgUQFoRrJ4pZigQXpOE0S7J9IGwmgH801h4H5ODqOCG8/GRfXHQ+9ab754NL79O7wDwdjwY3CcU8sEANg=="
+        crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- <script src="http://code.jquery.com/jquery-latest.min.js" crossorigin="anonymous"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/venobox/1.9.0/venobox.min.js"
+        integrity="sha512-hr9TR9RqJLzyYAkyJH6C9Nalz5kVDzXiNt14tANyuLuSC+7wyxEK94EfqWPBrY7eAlNEkTBowANuFQwKVjTEEw=="
+        crossorigin="anonymous"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Martel:wght@300&display=swap');
+
+        :root {
+            --darkSelection: rgba(0, 0, 0, 0.699);
+            --lightSelection: #fff;
+            --nav: #000000e6;
+            --topmargin: 3.5rem;
+        }
+
+        ::-moz-selection {
+            color: var(--lightSelection);
+            background-color: var(--darkSelection);
+        }
+
+        ::selection {
+            color: var(--lightSelection);
+            background-color: var(--darkSelection);
+        }
+
+        body {
+            font-family: 'Martel', serif !important;
+
+        }
+
+        nav::-moz-selection {
+            color: var(--darkSelection);
+            background-color: var(--lightSelection);
+        }
+
+        nav::selection {
+            color: var(--darkSelection);
+            background-color: var(--lightSelection);
+        }
+
+        #navbararea::-webkit-scrollbar {
+            width: 3px;
+            height: 3px;
+        }
+
+        #navbararea::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        #navbararea::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        #navbararea::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        nav {
+            background-color: var(--nav);
+            height: var(--topmargin);
+        }
+
+        div.loader {
+            height: 256px;
+        }
+
+        .gradient {
+            background-image: linear-gradient(49deg, rgb(97 224 148), rgb(55 130 255));
+        }
+
+        img.articleImg {
+            width: 50%;
+            max-width: 316px;
+            float: right;
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: none;
+            font-size: 23px;
+            padding: 0px 10px;
+            background-color: rgb(255, 153, 0);
+            background-image: linear-gradient(315deg, #1fbbf9 0%, #2125fe 74%) !important;
+            border: none !important;
+        }
+
+        section {
+            margin-top: 3.2rem;
+
+        }
+
+        section:not(.active) {
+            display: none !important;
+        }
+
+        section#about img {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        section#about .avatar,
+        section#about .avatar img {
+            border-radius: 8%;
+        }
+
+        section#about .avatar {
+            height: 221px;
+            width: 221px;
+            background-color: #21adfe;
+            background-image: linear-gradient(to top, #88d3ce 0%, #6e45e2 100%);
+        }
+
+        @media screen and (max-width: 260px) {
+            section#about .avatar {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 6px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            transition: 0.3s;
+        }
+
+
+        #article-area p {
+            text-align: justify;
+        }
+
+        .nav-mob-overly {
+            width: 100%;
+            height: 100%;
+            z-index: 997;
+            top: 0;
+            left: 0;
+            position: fixed;
+            background: rgba(52, 59, 64, 0.9);
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .nav-mob-overly {
+                visibility: hidden;
+            }
+
+        }
+
+        @media (max-width: 767px) {
+
+            #navbararea {
+                position: fixed;
+                top: var(--topmargin);
+                left: -292px;
+                bottom: 0px;
+                max-width: 60vw;
+                width: 290px;
+                padding: 1rem;
+                background-color: var(--nav);
+                overflow-y: auto;
+                overflow-x: hidden;
+                overflow-wrap: break-word;
+                opacity: 0.2;
+                transition: all 600ms linear;
+
+            }
+
+            #navbararea .dropdown-item {
+                white-space: break-spaces !important;
+            }
+
+            #navbararea.show {
+                left: 0px;
+                opacity: 1;
+            }
+        }
+    </style>
+
+</head>
+
+<body class="d-flex flex-column Dheeraj Search" style="min-height: 100%!important;">
+    <header class="fixed-top">
+        <nav class="navbar navbar-expand-md navbar-dark text-capitalize">
+            <a class="navbar-brand" href="#">
+                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/800px-Wikipedia-logo-v2.svg.png"
+                    width="30" height="30" alt="" loading="lazy" class="rounded-circle mx-2">wikipedia
+            </a>
+            <button class="navbar-toggler p-2" type="button" style="font-size: 25px;">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
+            <div class="navbar-collapse" id="navbararea">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link nav-link-direct" href="#">home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="india" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">India</a>
+                        <div class="dropdown-menu" aria-labelledby="india">
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=14533">India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=14597">Geography of India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=293133">Culture of India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=2781944">Indian astronomy</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=1848052">Indian mathematics</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=7564733">Indian people</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=9466823">Wildlife of India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=3298895">Flora of India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=343949">Indian Army</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=604522">Indian Navy</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=403355">Indian Air Force</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=375986">States and union territories of
+                                India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=11572324">Indian inventions and
+                                discoveries</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=141896">President of India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=24452">Prime Minister of India</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="History" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">History</a>
+                        <div class="dropdown-menu" aria-labelledby="History">
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=13890">History of India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=2198463">History of the Republic of India</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=21476772">Vedic period</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=46853">Indus Valley Civilisation</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=2510506">Indo-Aryan migration</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=10772350">History</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=33692">World history</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=435268">Human history</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=25595604">Military history</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=13929">History of religion</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=222291">Social history</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=10066498">Demographic history</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=2061136">History of education</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=1827600">Environmental history</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=51319">Intellectual history</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="Physics" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Physics</a>
+                        <div class="dropdown-menu" aria-labelledby="Physics">
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=22939">Physics</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=38890">Natural science</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=19673093">Matter</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=20580">Motion</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=28758">Spacetime</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=9649">Energy</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=10902">Force</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=31880">Universe</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=50650">Astronomy</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=25202">Quantum mechanics</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=151066">Classical physics</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=844186">Modern physics</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="Theories" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Theories</a>
+                        <div class="dropdown-menu" aria-labelledby="Theories">
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=30746">Theory</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=47641">Standard Model</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=25267">Quantum field theory</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=28481">Statistical mechanics</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=4116">Big Bang</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=5382">Inflation (cosmology)</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=12024">General relativity</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=244611">Newton's law of universal
+                                gravitation</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=102858">Cell theory</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=8411">Darwinism</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=326920">Biogenesis</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=9236">Evolution</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=59616">Fermentation theory</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=185259">Germ theory of disease</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=914025">Triune brain</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=4131939">Saltation (biology)</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=18962436">Ohno's law</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="Film" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Film</a>
+                        <div class="dropdown-menu" aria-labelledby="Film">
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=21555729">Film</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=41974496">Captain America: Civil War</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=36483433">Divergent</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=37322450">Despicable Me</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=36484254">Avengers: Age of Ultron</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=38222746">Baahubali: The Beginning</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=44254295">Avengers: Endgame</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=44240443">Avengers: Infinity War</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=54418406">K.G.F: Chapter 1</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=43910733">Star Wars: The Rise of Skywalker</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=920613">Cars (film)</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=48893231">The Emoji Movie</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=31113163">Angry Birds</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=43696932">Pacific Rim: Uprising</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=3248340">Kung Fu Panda</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=55503551">Spies in Disguise</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=58635027">Bad Boys for Life</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=43683268">The Martian</a>
+                            <a class="dropdown-item data-link" target="_blank"
+                                href="https://en.wikipedia.org/wiki?curid=43788307">Men in Black: International</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link me" href="#" title="About Developer">about</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <section id="article" class="pt-3 active flex-shrink-0">
+        <div class="mx-auto my-2" style="width: 400px; max-width: 100%;">
+            <form class="form mx-3" autocomplete="off">
+                <label class="sr-only" for="quarry">Search</label>
+                <div class="input-group mb-2">
+                    <input type="text" id="quarry" class="form-control" placeholder="Search" autocapitalize="false"
+                        spellcheck="false">
+                    <div class="input-group-append">
+                        <button class="input-group-text QSerch" type="submit"><i class="fa fa-search"
+                                aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="article-area" class="pt-2">
+            <div
+                class="card mx-5 my-2 rounded d-flex justify-content-center align-items-center bg-light loader gradient">
+                <div class="m-3 spinner-border text-success" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                Loading...
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="px-4">
+        <div class=" d-flex flex-column align-items-center p-4">
+            <div class="avatar">
+                <img src="https://api.sololearn.com/Uploads/Avatars/8384697.jpg" alt="Dheeraj Sharma">
+            </div>
+            <div class="text-center px-3 py-2">
+                <h3>Dheeraj Sharma</h3>
+                <div class="social-links m-3 text-center">
+                    <a href="https://www.sololearn.com/Profile/8384697" target="_blank"><img
+                            src="https://www.sololearn.com//Images/favicon-192x192.png" alt="sololearn"></a>
+                    <a href="https://github.com/GreatNerve" target="_blank"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/9/95/Font_Awesome_5_brands_github.svg"
+                            alt="E-mail"></a>
+
+                    <a href="https://stackoverflow.com/users/13444609/dheeraj-sharma" target="_blank"><img
+                            src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png"
+                            alt="Stack Overflow"></a>
+                </div>
+                <h6 class="mx-3 text-break">This project is devloped by me for just fun.</h6>
+                <button class="btn btn-outline-primary mt-2 back-home" type="button">Back to home</button>
+            </div>
+        </div>
+        <hr>
+    </section>
+
+    <footer class="mt-auto px-5 text-center text-muted">
+        <span><span>Developed by : </span><a target="_blank" href="https://www.sololearn.com/Profile/8384697"
+                class="me">Dheeraj Sharma</a><span>, &copy; Dheeraj Sharma. All Rights Reserved.</span> </span>
+        <hr class="my-2">
+    </footer>
+    <button id="back-to-top" class="btn back-to-top text-light" type="button">
+        <i class="fa fa-angle-up" aria-hidden="true"></i>
+    </button>
+    <div class="nav-mob-overly"></div>
+
+</body>
+<script>
+    var article;
+    const loader = `<div class="card mx-5 my-2  rounded d-flex justify-content-center align-items-center bg-light loader gradient"><div class="m-3 spinner-border text-success" role="status"><span class="sr-only">Loading...</span></div>Loading...</div>`;
+    $(document).ready(function () {
+        Swal.fire({
+            icon: 'success',
+            title: "Wikipedia",
+            text: `Search and read Wikipedia article on this application.`,
+            footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
+        });
+        $('.navbar-toggler').click(function (e) {
+            $('.nav-mob-overly').fadeToggle(400);
+            $('#navbararea').toggleClass('show');
+            $('.navbar-toggler i').toggleClass('fa-bars fa-times');
+            return false;
+        });
+        $(document).click(function (e) {
+            let navToggle = $(".navbar-toggler");
+            if (!navToggle.is(e.target) && navToggle.has(e.target).length === 0) {
+                if ($('#navbararea').hasClass('show')) {
+                    $('#navbararea').removeClass('show');
+                    $('.nav-mob-overly').fadeOut(400);
+                    $('.navbar-toggler i').toggleClass('fa-bars fa-times');
+
+                }
+            }
+        });
+        window.addEventListener('online', function () {
+            if ($('#article-area').children('article').length == 0) {
+                startup();
+            }
+            return false;
+        });
+        startup();
+        return false;
+    });
+    function startup() {
+        article = new Wikipedia();
+        article.GetArticle('14533', 'pageids');
+        $(".navbar-brand").click(function (event) {
+            event.preventDefault();
+            if (!$('#article').hasClass('active')) {
+                $('section.active').removeClass('active');
+                $('#article').addClass('active');
+            }
+            $('#article-area').append(loader);
+            article.GetArticle('5043734', 'pageids', elem = $('.nav-link:contains(home)'));
+        });
+        $('.nav-link-direct').click(function (e) {
+            let elem;
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1000, 'swing');
+            $('.nav-item.active').removeClass('active');
+            $(this).closest('.nav-item').addClass('active');
+            switch (this.innerText.toLowerCase()) {
+                case 'home':
+                    if (!$('#article').hasClass('active')) {
+                        $('section.active').removeClass('active');
+                        $('#article').addClass('active');
+                    }
+                    break;
+            }
+        });
+        $('.back-home').click(function () {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1000, 'swing');
+            $('.nav-item.active').removeClass('active');
+            $('.nav-link:contains(home)').closest('.nav-item').addClass('active');
+            if (!$('#article').hasClass('active')) {
+                $('section.active').removeClass('active');
+                $('#article').addClass('active');
+            }
+        });
+        $('a.data-link').click(function (e) {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1000, 'swing');
+            e.preventDefault();
+            let quarry = $(this).attr('href').trim().toLowerCase().replace('https://en.wikipedia.org/wiki?curid=', '');
+            if (quarry) {
+                article.GetArticle(quarry, 'pageids', elem = this);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: "Invalid link",
+                    text: `Sorry, this link is invalid so we are not able to complete this request.`,
+                    footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
+                });
+            }
+        });
+
+        $('#quarry').keypress(function () {
+            let val = this.value.toLowerCase().trim();
+            try {
+                $(this).autocomplete("enable");
+            } catch (error) {
+
+            }
+            if (val !== undefined && val.length !== 1 && article.suggestion.key.length !== 0) {
+                $(this).data("uiAutocomplete").search(val);
+            }
+            if (article.suggestion.status) {
+                article.suggestion.status = false;
+                if (val) {
+                    article.getSuggestion(this, val);
+                }
+            } else if (val.length !== 0) {
+                article.getSuggestion(this, val);
+            }
+            return true;
+        });
+        $("form.form").submit(function (e) {
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1000, 'swing');
+            let elem = '#quarry';
+            let val = $(elem).val().toString().toLowerCase();
+            if (val) {
+                if (article.suggestion.key.indexOf(val) == -1) {
+                    article.GetArticle(value = val, type = 'titles', elem = $('.nav-link:contains(home)'));
+                } else {
+                    let index = article.suggestion.key.indexOf(val);
+                    article.GetArticle(value = article.suggestion.value[index], type = 'pageids', elem = $('.nav-link:contains(home)'));
+                }
+            }
+        });
+        $(document).on('click', '.me', function (e) {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1000, 'swing');
+            if (!($('#about').find('h3').text() == 'Dheeraj Sharma')) {
+                $('#about').empty();
+                $('#about').append(`<div class=" d-flex flex-column align-items-center p-4"><div class="avatar"><img src="https://api.sololearn.com/Uploads/Avatars/8384697.jpg" alt="Dheeraj Sharma"></div><div class="text-center px-3 py-2"><h3>Dheeraj Sharma</h3><div class="social-links m-3 text-center"><a href="https://www.sololearn.com/Profile/8384697" target="_blank"><img src="https://www.sololearn.com//Images/favicon-192x192.png" alt="sololearn"></a><a href="https://github.com/GreatNerve" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Font_Awesome_5_brands_github.svg" alt="github"></a><a href="https://stackoverflow.com/users/13444609/dheeraj-sharma" target="_blank"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png" alt="Stack Overflow"></a></div><h6 class="mx-3 text-break">This project is devloped by me for just fun.</h6><button class="btn btn-outline-primary mt-2 back-home" type="button">Back to home</button></div></div><hr>`);
+            }
+            e.preventDefault();
+            Swal.close();
+            $('.nav-item.active').removeClass('active');
+            $('.nav-link:contains(about)').closest('.nav-item').addClass('active');
+
+            if (!$('#about').hasClass('active')) {
+                $('section.active').removeClass('active');
+                $('#about').addClass('active');
+            }
+        });
+        $(window).scroll(function () {
+            let scrollTop = $(this).scrollTop();
+            if (scrollTop > 20) {
+                $('.back-to-top').fadeIn('slow');
+            } else {
+                $('.back-to-top').fadeOut('slow');
+            }
+            return false;
+        });
+
+        $('.back-to-top').click(function () {
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1000, 'swing');
+            return false;
+        });
+    }
+    class Wikipedia {
+        constructor(target = '#article-area', apiURL = 'https://en.wikipedia.org/w/api.php') {
+            this.apiURL = apiURL;
+            this.target = target;
+            this.article;
+            this.suggestion = {
+                key: Array(),
+                value: Array(),
+                status: true
+            };
+        }
+        getSuggestion(elem, value) {
+            let dataSend = {
+                gsrsearch: value.trim().toLowerCase(),
+                action: 'query',
+                generator: 'search',
+                utf8: 1,
+                format: 'json'
+            };
+            let cls = this;
+            jQuery.ajax({
+                url: this.apiURL,
+                type: 'get',
+                data: dataSend,
+                dataType: 'jsonp',
+                timeout: 5000,
+                crossDomain: true,
+                async: true,
+                success: function (responce, status, xhr) {
+                    if (status == 'success') {
+                        try {
+                            if (responce.query != undefined) {
+                                let sortArray = Array();
+                                for (let pg in responce.query.pages) {
+                                    sortArray.push(responce.query.pages[pg]);
+                                }
+                                sortArray.sort(function (el1, el2) {
+                                    return el1.index - el2.index;
+                                });
+                                for (let pg in sortArray) {
+                                    cls.suggestion.key.push(sortArray[pg].title.toLowerCase());
+                                    cls.suggestion.value.push(sortArray[pg].pageid);
+                                }
+                                cls.suggestion.status = true;
+                                $(elem).autocomplete({
+                                    source: Array(...new Set(cls.suggestion.key))
+                                });
+                                $(elem).data("uiAutocomplete").search(value);
+                                return true;
+                            }
+                        } catch (error) {
+
+                        }
+                    }
+                }
+            });
+        }
+        GetArticle(value = 'Curiosity rover', type = 'titles', elem) {
+            $(this.target).children('.loader').remove();
+            $(this.target).children().hide();
+            $(this.target).prepend(loader);
+            let dataSend = {
+                [type]: value.toString().trim().toLowerCase(),
+                action: 'query',
+                format: 'json',
+                redirects: 1,
+                prop: 'extracts',
+                exintro: '',
+                explaintext: ''
+            };
+            let cls = this;
+            jQuery.ajax({
+                url: this.apiURL,
+                type: 'get',
+                data: dataSend,
+                dataType: 'jsonp',
+                timeout: 5000,
+                crossDomain: true,
+                async: true,
+                success: function (responce, status, xhr) {
+                    if (status == 'success') {
+                        cls.article = responce;
+                        for (let pg in cls.article.query.pages) {
+                            if (pg != undefined && pg != '-1') {
+                                let dataImgSend = {
+                                    pageids: pg,
+                                    action: 'query',
+                                    format: 'json',
+                                    redirects: 1,
+                                    prop: 'pageimages',
+                                    piprop: 'original'
+                                };
+                                jQuery.ajax({
+                                    url: cls.apiURL,
+                                    type: 'get',
+                                    data: dataImgSend,
+                                    dataType: 'jsonp',
+                                    timeout: 5000,
+                                    crossDomain: true,
+                                    async: true,
+                                    success: function (responce, status, xhr) {
+                                        if (status == 'success') {
+                                            $(cls.target).empty();
+                                            $(cls.target).prepend(loader);
+                                            try {
+                                                cls.article.query.pages[pg].img = responce.query.pages[pg].original.source != undefined ? responce.query.pages[pg].original.source : '';
+                                                cls.setArticle(pg, cls.target);
+                                            } catch (error) {
+                                                cls.article.query.pages[pg].img = '';
+                                                cls.setArticle(pg, cls.target);
+                                            }
+                                        }
+                                        return false;
+                                    },
+                                    error: function (xhr, status, error) {
+                                        cls.article.query.pages[pg].img = '';
+                                        cls.setArticle(pg, cls.target);
+                                        return false;
+                                    }
+                                });
+                            } else {
+                                $(cls.target).children().show();
+                                if ($(cls.target).children('article').length > 0) {
+                                    $(cls.target).children('.loader').remove();
+                                }
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: "No article found",
+                                    text: `Sorry, We didn't found any article related on subject ${value}.`,
+                                    footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
+                                });
+                                return false;
+                            }
+                        }
+                        if (elem) {
+                            $('.nav-item.active').removeClass('active');
+                            $(elem).closest('.nav-item').addClass('active');
+                            if (!$('#article').hasClass('active')) {
+                                $('section.active').removeClass('active');
+                                $('#article').addClass('active');
+                            }
+                        }
+                    }
+                    return false;
+                }, error: function (xhr, status, error) {
+                    $(cls.target).children().show();
+                    if ($(cls.target).children('article').length > 0) {
+                        $(cls.target).children('.loader').remove();
+                    }
+                    if (error == "") {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: "No Internet",
+                            html: `<div align="left">Try :<blockquote><small><ul><li>Checking the network cables, modem, and router</li><li>Reconnecting to Wi-Fi</li></ul></small></blockquote></div>`,
+                            footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
+                        });
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: error.toUpperCase(),
+                            text: `Sorry, we are not able to complete this request.`,
+                            footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
+                        });
+                    }
+                    return false;
+                }
+            });
+        }
+        setArticle(pg, target) {
+            if (pg &&
+                target &&
+                this.article &&
+                this.article.query.pages &&
+                this.article.query.pages[pg]) {
+                $('#quarry').blur();
+                let elem = $(`<article></article>`);
+                let div = $('<div></div>');
+                let footer = $('<div></div>').attr({ align: 'center' });
+                elem.attr({ class: 'container-fluid px-4 mb-1' });
+                div.attr({ class: "clearfix" });
+                if (this.article.query.pages[pg].img) {
+                    let aimg = $('<a></a>').attr({
+                        class: 'venobox',
+                        href: this.article.query.pages[pg].img,
+                        'data-title': this.article.query.pages[pg].title
+                    });
+                    aimg.append($('<img>').attr({
+                        class: 'mx-3 articleImg',
+                        src: this.article.query.pages[pg].img
+                    }));
+                    div.append(aimg);
+                }
+                div.append($('<p></p>').text(this.article.query.pages[pg].extract));
+                footer.append($('<a></a>').attr({
+                    class: 'btn btn-outline-info w-auto',
+                    href: `https://en.wikipedia.org/wiki?curid=${pg}`
+                }).text('Full article'));
+                footer.append($('<hr>'));
+
+                elem.append($('<h3></h3>').text(this.article.query.pages[pg].title));
+                elem.append($('<hr>').attr({ class: 'my-2' }));
+                elem.append(div);
+                elem.append(footer);
+                elem.hide();
+                $(target).append(elem);
+                $(this.target).children('.loader').fadeOut(200, function () {
+                    $(this).remove();
+                });
+                elem.fadeIn(2200);
+                $('.venobox').venobox({ spinner: 'three-bounce', titleattr: 'data-title', share: ['facebook', 'twitter', 'linkedin', 'pinterest', 'download'] });
+                return false;
+
+            }
+        }
+    }
+</script>
+
+</html>
