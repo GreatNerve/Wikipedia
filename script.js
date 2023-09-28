@@ -1,3 +1,4 @@
+
 var article;
 const loader = `<div class="card mx-5 my-2  rounded d-flex justify-content-center align-items-center bg-light loader gradient"><div class="m-3 spinner-border text-success" role="status"><span class="sr-only">Loading...</span></div>Loading...</div>`;
 $(document).ready(function () {
@@ -131,7 +132,7 @@ function startup() {
         $('html, body').animate({
             scrollTop: 0
         }, 1000, 'swing');
-        if(!($('#about').find('h3').text()=='Dheeraj Sharma')){
+        if (!($('#about').find('h3').text() == 'Dheeraj Sharma')) {
             $('#about').empty();
             $('#about').append(`<div class=" d-flex flex-column align-items-center p-4"><div class="avatar"><img src="https://api.sololearn.com/Uploads/Avatars/8384697.jpg" alt="Dheeraj Sharma"></div><div class="text-center px-3 py-2"><h3>Dheeraj Sharma</h3><div class="social-links m-3 text-center"><a href="https://www.sololearn.com/Profile/8384697" target="_blank"><img src="https://www.sololearn.com//Images/favicon-192x192.png" alt="sololearn"></a><a href="https://github.com/GreatNerve" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Font_Awesome_5_brands_github.svg" alt="github"></a><a href="https://stackoverflow.com/users/13444609/dheeraj-sharma" target="_blank"><img src="https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon.png" alt="Stack Overflow"></a></div><h6 class="mx-3 text-break">This project is devloped by me for just fun.</h6><button class="btn btn-outline-primary mt-2 back-home" type="button">Back to home</button></div></div><hr>`);
         }
@@ -284,14 +285,14 @@ class Wikipedia {
                             });
                         } else {
                             $(cls.target).children().show();
-                            if ($(cls.target).children('article').length>0) {
+                            if ($(cls.target).children('article').length > 0) {
                                 $(cls.target).children('.loader').remove();
                             }
                             Swal.fire({
                                 icon: 'error',
                                 title: "No article found",
                                 text: `Sorry, We didn't found any article related on subject ${value}.`,
-                        footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
+                                footer: `<span>Developed by : <a target="_blank" class="me" href="https://www.sololearn.com/Profile/8384697">Dheeraj Sharma</a></span>`
                             });
                             return false;
                         }
