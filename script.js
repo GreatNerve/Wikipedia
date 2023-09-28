@@ -413,7 +413,8 @@ class Wikipedia {
             div.append($('<p></p>').text(this.article.query.pages[pg].extract));
             footer.append($('<a></a>').attr({
                 class: 'btn btn-outline-info w-auto',
-                href: `https://en.wikipedia.org/wiki?curid=${pg}`
+                href: `https://en.wikipedia.org/wiki?curid=${pg}`,
+                target: '_blank'
             }).text('Full article'));
             footer.append($('<hr>'));
 
